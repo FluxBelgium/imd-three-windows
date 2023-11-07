@@ -6,24 +6,27 @@ import {
     MeshStandardMaterial,
 } from "three";
 import { scene } from "../main";
-import { WindowDoor } from "./WindowDoor";
 
-export class WindowFrame {
-    constructor(width = 1, height = 1) {
+export class WindowDoor {
+    constructor(width = 1, height = 1, flip = false) {
         this.width = width;
         this.height = height;
 
         // Measurements.
         this.frameThickness = 0.05;
-        this.frameDepth = 0.1;
-        this.sillHeight = 0.01;
-        this.sillDepth = 0.2;
+        this.frameDepth = 0.05;
+        this.glassDepth = 0.02;
 
         // Group.
         this.group = new Group();
+        // Flip if specified.
+        if(flip) {
+            this.group.scale.x = -1;
+        }
 
         // Material.
         this.metalMaterial = new MeshNormalMaterial({});
+        this.glassMaterial = new MeshNormalMaterial({});
 
         // Geometry.
         this.placeholderGeometry = new BoxGeometry();
@@ -39,27 +42,14 @@ export class WindowFrame {
             this.placeholderGeometry,
             this.metalMaterial
         );
-        this.windowSill = new Mesh(
-            this.placeholderGeometry,
-            this.metalMaterial
-        );
+        this.glass = new Mesh(this.placeholderGeometry, this.glassMaterial);
 
         this.group.add(
             this.frameTop,
             this.frameBottom,
             this.frameLeft,
             this.frameRight,
-            this.windowSill
-        );
-
-        this.doorLeft = new WindowDoor(
-            (width - this.frameThickness * 2) / 2,
-            height - this.frameThickness * 2
-        );
-        this.doorRight = new WindowDoor(
-            (width - this.frameThickness * 2) / 2,
-            height - this.frameThickness * 2,
-            true
+            this.glass
         );
 
         this.add();
@@ -94,25 +84,29 @@ export class WindowFrame {
             height - this.frameThickness * 2,
             this.frameDepth
         );
-        this.windowSill.scale.set(width, this.sillHeight, this.sillDepth);
+        this.glass.scale.set(
+            width - this.frameThickness * 2,
+            height - this.frameThickness * 2,
+            this.glassDepth
+        );
 
         // Reposition parts.
-        this.windowSill.position.y = -height / 2 - this.sillHeight / 2;
         this.frameBottom.position.y = -height / 2 + this.frameThickness / 2;
+        this.frameBottom.position.x = width / 2;
         this.frameTop.position.y = height / 2 - this.frameThickness / 2;
-        this.frameLeft.position.x = -width / 2 + this.frameThickness / 2;
-        this.frameRight.position.x = width / 2 - this.frameThickness / 2;
+        this.frameTop.position.x = width / 2;
+        this.frameLeft.position.x = width - this.frameThickness / 2;
+        this.frameRight.position.x = this.frameThickness / 2;
+        this.glass.position.x = width / 2
+    }
 
-        // Update window doors.
-        this.doorLeft.setSize(
-            (width - this.frameThickness * 2) / 2,
-            height - this.frameThickness * 2
-        );
-        this.doorRight.setSize(
-            (width - this.frameThickness * 2) / 2,
-            height - this.frameThickness * 2
-        );
-        this.doorLeft.setPosition(-(width - this.frameThickness * 2) / 2, 0, 0);
-        this.doorRight.setPosition((width - this.frameThickness * 2) / 2, 0, 0);
+    // Set group position.
+    setPosition(x, y, z) {
+        this.group.position.set(x, y, z);
+    }
+
+    // Set window rotation.
+    setRotation(radians) {
+        this.group.rotation.y = radians * this.group.scale.x;
     }
 }
