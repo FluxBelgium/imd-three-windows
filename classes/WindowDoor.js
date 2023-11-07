@@ -1,11 +1,4 @@
-import {
-    BoxGeometry,
-    Group,
-    Mesh,
-    MeshNormalMaterial,
-    MeshPhysicalMaterial,
-    MeshStandardMaterial,
-} from "three";
+import { BoxGeometry, Group, Mesh, MeshStandardMaterial } from "three";
 import { scene } from "../main";
 
 export class WindowDoor {
@@ -21,13 +14,22 @@ export class WindowDoor {
         // Group.
         this.group = new Group();
         // Flip if specified.
-        if(flip) {
+        if (flip) {
             this.group.scale.x = -1;
         }
 
         // Material.
-        this.metalMaterial = new MeshStandardMaterial({ color: "#FFFFFF", roughness: 0.5 });
-        this.glassMaterial = new MeshStandardMaterial({ color: "#FFFFFF", roughness: 0.25, metalness: 1, transparent: true, opacity: 0.2 });
+        this.metalMaterial = new MeshStandardMaterial({
+            color: "#FFFFFF",
+            roughness: 0.5,
+        });
+        this.glassMaterial = new MeshStandardMaterial({
+            color: "#FFFFFF",
+            roughness: 0.25,
+            metalness: 1,
+            transparent: true,
+            opacity: 0.2,
+        });
 
         // Geometry.
         this.placeholderGeometry = new BoxGeometry();
@@ -52,6 +54,18 @@ export class WindowDoor {
             this.frameRight,
             this.glass
         );
+
+        // Shadows.
+        this.frameTop.castShadow = true;
+        this.frameBottom.castShadow = true;
+        this.frameLeft.castShadow = true;
+        this.frameRight.castShadow = true;
+
+        this.frameTop.receiveShadow = true;
+        this.frameBottom.receiveShadow = true;
+        this.frameLeft.receiveShadow = true;
+        this.frameRight.receiveShadow = true;
+        this.glass.receiveShadow = true;
 
         this.add();
         this.setSize(this.width, this.height);
@@ -98,7 +112,7 @@ export class WindowDoor {
         this.frameTop.position.x = width / 2;
         this.frameLeft.position.x = width - this.frameThickness / 2;
         this.frameRight.position.x = this.frameThickness / 2;
-        this.glass.position.x = width / 2
+        this.glass.position.x = width / 2;
     }
 
     // Set group position.

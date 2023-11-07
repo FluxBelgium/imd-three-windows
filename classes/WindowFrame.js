@@ -17,7 +17,10 @@ export class WindowFrame {
         this.group = new Group();
 
         // Material.
-        this.metalMaterial = new MeshStandardMaterial({ color: "#FFFFFF", roughness: 0.5 });
+        this.metalMaterial = new MeshStandardMaterial({
+            color: "#FFFFFF",
+            roughness: 0.5,
+        });
 
         // Geometry.
         this.placeholderGeometry = new BoxGeometry();
@@ -45,6 +48,18 @@ export class WindowFrame {
             this.frameRight,
             this.windowSill
         );
+
+        // Shadows.
+        this.frameTop.castShadow = true;
+        this.frameBottom.castShadow = true;
+        this.frameLeft.castShadow = true;
+        this.frameRight.castShadow = true;
+        this.windowSill.castShadow = true;
+
+        this.frameTop.receiveShadow = true;
+        this.frameBottom.receiveShadow = true;
+        this.frameLeft.receiveShadow = true;
+        this.frameRight.receiveShadow = true;
 
         this.doorLeft = new WindowDoor(
             (width - this.frameThickness * 2) / 2,
