@@ -1,18 +1,7 @@
-import {
-    BoxGeometry,
-    Mesh,
-    MeshNormalMaterial,
-    PerspectiveCamera,
-    Scene,
-    Vector3,
-    WebGLRenderer,
-} from "three";
+import { PerspectiveCamera, Scene, Vector3, WebGLRenderer } from "three";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { WindowFrame } from "./classes/WindowFrame";
-
-// Add GUI.
-const gui = new GUI();
 
 // Three.js stuff.
 // - canvas container
@@ -41,6 +30,15 @@ function resize() {
 // Objects.
 const windowFrame = new WindowFrame(1, 1);
 
+// Add GUI.
+const gui = new GUI();
+const guiVars = {
+    rotation: 0,
+};
+gui.add(guiVars, "rotation", 0, Math.PI / 2).onChange((value) => {
+    windowFrame.setRotation(value);
+});
+
 // Render loop.
 window.requestAnimationFrame(loop);
 function loop() {
@@ -48,4 +46,4 @@ function loop() {
     window.requestAnimationFrame(loop);
 }
 
-export { scene }
+export { scene };
