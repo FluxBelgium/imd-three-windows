@@ -25,8 +25,8 @@ export class WindowDoor {
         }
 
         // Material.
-        this.metalMaterial = new MeshNormalMaterial({});
-        this.glassMaterial = new MeshNormalMaterial({});
+        this.metalMaterial = new MeshStandardMaterial({ color: "#FFFFFF", roughness: 0.5 });
+        this.glassMaterial = new MeshStandardMaterial({ color: "#FFFFFF", transparent: true, opacity: 0.1 });
 
         // Geometry.
         this.placeholderGeometry = new BoxGeometry();

@@ -1,10 +1,4 @@
-import {
-    BoxGeometry,
-    Group,
-    Mesh,
-    MeshNormalMaterial,
-    MeshStandardMaterial,
-} from "three";
+import { BoxGeometry, Group, Mesh, MeshStandardMaterial } from "three";
 import { scene } from "../main";
 import { WindowDoor } from "./WindowDoor";
 
@@ -23,7 +17,7 @@ export class WindowFrame {
         this.group = new Group();
 
         // Material.
-        this.metalMaterial = new MeshNormalMaterial({});
+        this.metalMaterial = new MeshStandardMaterial({ color: "#FFFFFF", roughness: 0.5 });
 
         // Geometry.
         this.placeholderGeometry = new BoxGeometry();
