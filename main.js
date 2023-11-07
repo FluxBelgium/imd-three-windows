@@ -12,6 +12,8 @@ import {
     WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { WindowFrame } from "./classes/WindowFrame";
@@ -27,6 +29,8 @@ const texEnvironment = cubeTextureLoader.load([
     "pz.png",
     "nz.png",
 ]);
+
+const gltfLoader = new GLTFLoader();
 
 // Three.js stuff.
 // - canvas container
@@ -58,7 +62,10 @@ function resize() {
 // Objects.
 const windowFrame = new WindowFrame(1, 1);
 
-const floor = new Mesh(new PlaneGeometry(100, 100), new ShadowMaterial({ transparent: true, opacity: 0.1}));
+const floor = new Mesh(
+    new PlaneGeometry(100, 100),
+    new ShadowMaterial({ transparent: true, opacity: 0.1 })
+);
 floor.rotation.x = -Math.PI / 2;
 floor.position.y = -1;
 floor.receiveShadow = true;
@@ -88,16 +95,20 @@ const guiVars = {
     rotation: 0,
     width: 1,
     height: 1,
+    color: "#FFFFFF",
 };
 gui.add(guiVars, "rotation", 0, Math.PI / 2).onChange((value) => {
     windowFrame.setRotation(value);
 });
 gui.add(guiVars, "width", 0.5, 3).onChange((value) => {
-  windowFrame.setSize(guiVars.width, guiVars.height);
+    windowFrame.setSize(guiVars.width, guiVars.height);
 });
 gui.add(guiVars, "height", 0.5, 3).onChange((value) => {
-  windowFrame.setSize(guiVars.width, guiVars.height);
-  floor.position.y = -guiVars.height;
+    windowFrame.setSize(guiVars.width, guiVars.height);
+    floor.position.y = -guiVars.height;
+});
+gui.addColor(guiVars, "color").onChange((value) => {
+    windowFrame.setMaterialColor(value);
 });
 
 // Render loop.
@@ -107,4 +118,4 @@ function loop() {
     window.requestAnimationFrame(loop);
 }
 
-export { scene };
+export { scene, gltfLoader };

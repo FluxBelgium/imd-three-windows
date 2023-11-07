@@ -1,4 +1,4 @@
-import { BoxGeometry, Group, Mesh, MeshStandardMaterial } from "three";
+import { BoxGeometry, Color, Group, Mesh, MeshStandardMaterial } from "three";
 import { scene } from "../main";
 import { WindowDoor } from "./WindowDoor";
 
@@ -129,5 +129,13 @@ export class WindowFrame {
     setRotation(radians) {
         this.doorLeft.setRotation(radians);
         this.doorRight.setRotation(radians);
+    }
+
+    // Set material color.
+    setMaterialColor(color) {
+        this.metalMaterial.color = new Color(color);
+
+        this.doorLeft.setMaterialColor(color);
+        this.doorRight.setMaterialColor(color);
     }
 }

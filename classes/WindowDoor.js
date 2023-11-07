@@ -1,5 +1,5 @@
-import { BoxGeometry, Group, Mesh, MeshStandardMaterial } from "three";
-import { scene } from "../main";
+import { BoxGeometry, Color, Group, Mesh, MeshStandardMaterial } from "three";
+import { gltfLoader, scene } from "../main";
 
 export class WindowDoor {
     constructor(width = 1, height = 1, flip = false) {
@@ -46,13 +46,23 @@ export class WindowDoor {
             this.metalMaterial
         );
         this.glass = new Mesh(this.placeholderGeometry, this.glassMaterial);
+        this.handleBase = new Mesh(
+            this.placeholderGeometry,
+            this.metalMaterial
+        );
+        this.handleGrip = new Mesh(
+            this.placeholderGeometry,
+            this.metalMaterial
+        );
 
         this.group.add(
             this.frameTop,
             this.frameBottom,
             this.frameLeft,
             this.frameRight,
-            this.glass
+            this.glass,
+            this.handleBase,
+            this.handleGrip
         );
 
         // Shadows.
@@ -60,12 +70,22 @@ export class WindowDoor {
         this.frameBottom.castShadow = true;
         this.frameLeft.castShadow = true;
         this.frameRight.castShadow = true;
+        this.handleBase.castShadow = true;
+        this.handleGrip.castShadow = true;
 
         this.frameTop.receiveShadow = true;
         this.frameBottom.receiveShadow = true;
         this.frameLeft.receiveShadow = true;
         this.frameRight.receiveShadow = true;
         this.glass.receiveShadow = true;
+        this.handleBase.receiveShadow = true;
+        this.handleGrip.receiveShadow = true;
+
+        // Load handle model.
+        gltfLoader.load("./models/handle.glb", (gltf) => {
+            this.handleBase.geometry = gltf.scene.children[0].geometry;
+            this.handleGrip.geometry = gltf.scene.children[1].geometry;
+        });
 
         this.add();
         this.setSize(this.width, this.height);
@@ -108,11 +128,20 @@ export class WindowDoor {
         // Reposition parts.
         this.frameBottom.position.y = -height / 2 + this.frameThickness / 2;
         this.frameBottom.position.x = width / 2;
+
         this.frameTop.position.y = height / 2 - this.frameThickness / 2;
         this.frameTop.position.x = width / 2;
+
         this.frameLeft.position.x = width - this.frameThickness / 2;
+
         this.frameRight.position.x = this.frameThickness / 2;
+
         this.glass.position.x = width / 2;
+
+        this.handleBase.position.x = width - this.frameThickness / 2;
+        this.handleBase.position.z = this.frameDepth / 2;
+        this.handleGrip.position.x = width - this.frameThickness / 2;
+        this.handleGrip.position.z = this.frameDepth / 2;
     }
 
     // Set group position.
@@ -122,6 +151,15 @@ export class WindowDoor {
 
     // Set window rotation.
     setRotation(radians) {
-        this.group.rotation.y = radians * this.group.scale.x;
+        // Rotate window.
+        this.group.rotation.y = -radians * this.group.scale.x;
+
+        // Rotate grip.
+        this.handleGrip.rotation.z = Math.max(-radians * 4, -Math.PI / 2);
+    }
+
+    // Set material color.
+    setMaterialColor(color) {
+        this.metalMaterial.color = new Color(color);
     }
 }
