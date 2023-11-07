@@ -1,24 +1,49 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+import {
+    BoxGeometry,
+    Mesh,
+    MeshNormalMaterial,
+    PerspectiveCamera,
+    Scene,
+    Vector3,
+    WebGLRenderer,
+} from "three";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+// Add GUI.
+const gui = new GUI();
 
-setupCounter(document.querySelector('#counter'))
+// Three.js stuff.
+// - canvas container
+const canvasContainer = document.querySelector("#canvasContainer");
+// - renderer
+const renderer = new WebGLRenderer({ alpha: true, antialias: true });
+canvasContainer.appendChild(renderer.domElement);
+// - scene
+const scene = new Scene();
+// - camera
+const camera = new PerspectiveCamera(50);
+camera.position.set(5, 5, 5);
+camera.lookAt(new Vector3(0, 0, 0));
+// - controls
+const controls = new OrbitControls(camera, renderer.domElement);
+
+// Resize function.
+resize();
+window.addEventListener("resize", resize);
+function resize() {
+    renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+    camera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
+    camera.updateProjectionMatrix();
+}
+
+// Objects.
+const cube = new Mesh(new BoxGeometry(), new MeshNormalMaterial());
+scene.add(cube);
+
+// Render loop.
+window.requestAnimationFrame(loop);
+function loop() {
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(loop);
+}
