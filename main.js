@@ -63,9 +63,17 @@ scene.add(directionalLight);
 const gui = new GUI();
 const guiVars = {
     rotation: 0,
+    width: 1,
+    height: 1,
 };
 gui.add(guiVars, "rotation", 0, Math.PI / 2).onChange((value) => {
     windowFrame.setRotation(value);
+});
+gui.add(guiVars, "width", 0.5, 3).onChange((value) => {
+  windowFrame.setSize(guiVars.width, guiVars.height);
+});
+gui.add(guiVars, "height", 0.5, 3).onChange((value) => {
+  windowFrame.setSize(guiVars.width, guiVars.height);
 });
 
 // Render loop.
