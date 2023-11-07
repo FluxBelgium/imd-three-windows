@@ -17,6 +17,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { WindowFrame } from "./classes/WindowFrame";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 
 // Loading textues.
 const cubeTextureLoader = new CubeTextureLoader();
@@ -31,6 +32,9 @@ const texEnvironment = cubeTextureLoader.load([
 ]);
 
 const gltfLoader = new GLTFLoader();
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath("./draco/");
+gltfLoader.setDRACOLoader(dracoLoader);
 
 // Three.js stuff.
 // - canvas container

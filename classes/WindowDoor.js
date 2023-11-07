@@ -46,6 +46,7 @@ export class WindowDoor {
             this.metalMaterial
         );
         this.glass = new Mesh(this.placeholderGeometry, this.glassMaterial);
+
         this.handleBase = new Mesh(
             this.placeholderGeometry,
             this.metalMaterial
@@ -54,6 +55,9 @@ export class WindowDoor {
             this.placeholderGeometry,
             this.metalMaterial
         );
+
+        this.handleBase.visible = false;
+        this.handleGrip.visible = false;
 
         this.group.add(
             this.frameTop,
@@ -82,9 +86,12 @@ export class WindowDoor {
         this.handleGrip.receiveShadow = true;
 
         // Load handle model.
-        gltfLoader.load("./models/handle.glb", (gltf) => {
+        gltfLoader.load("./models/handle_compressed.glb", (gltf) => {
             this.handleBase.geometry = gltf.scene.children[0].geometry;
             this.handleGrip.geometry = gltf.scene.children[1].geometry;
+
+            this.handleBase.visible = true;
+            this.handleGrip.visible = true;
         });
 
         this.add();
