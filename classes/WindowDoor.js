@@ -3,6 +3,7 @@ import {
     Group,
     Mesh,
     MeshNormalMaterial,
+    MeshPhysicalMaterial,
     MeshStandardMaterial,
 } from "three";
 import { scene } from "../main";
@@ -26,7 +27,7 @@ export class WindowDoor {
 
         // Material.
         this.metalMaterial = new MeshStandardMaterial({ color: "#FFFFFF", roughness: 0.5 });
-        this.glassMaterial = new MeshStandardMaterial({ color: "#FFFFFF", transparent: true, opacity: 0.1 });
+        this.glassMaterial = new MeshStandardMaterial({ color: "#FFFFFF", roughness: 0.25, metalness: 1, transparent: true, opacity: 0.2 });
 
         // Geometry.
         this.placeholderGeometry = new BoxGeometry();
