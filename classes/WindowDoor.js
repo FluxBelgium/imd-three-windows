@@ -25,10 +25,10 @@ export class WindowDoor {
         });
         this.glassMaterial = new MeshStandardMaterial({
             color: "#FFFFFF",
-            roughness: 0.25,
+            roughness: 0.15,
             metalness: 1,
             transparent: true,
-            opacity: 0.2,
+            opacity: 0.1,
         });
 
         // Geometry.

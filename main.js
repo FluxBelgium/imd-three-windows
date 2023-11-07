@@ -13,11 +13,11 @@ import {
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { WindowFrame } from "./classes/WindowFrame";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 
 // Loading textues.
 const cubeTextureLoader = new CubeTextureLoader();
@@ -49,7 +49,7 @@ const scene = new Scene();
 scene.environment = texEnvironment;
 // - camera
 const camera = new PerspectiveCamera(50);
-camera.position.set(2, 2, 2);
+camera.position.set(0, 0.5, 2);
 camera.lookAt(new Vector3(0, 0, 0));
 // - controls
 const controls = new OrbitControls(camera, renderer.domElement);
