@@ -28,7 +28,7 @@ export class WindowDoor {
             roughness: 0.15,
             metalness: 1,
             transparent: true,
-            opacity: 0.1,
+            opacity: 0.15,
         });
 
         // Geometry.

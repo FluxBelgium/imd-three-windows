@@ -10,12 +10,14 @@ import {
     ShadowMaterial,
     Vector3,
     WebGLRenderer,
+    PCFSoftShadowMap
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import Stats from "three/addons/libs/stats.module.js";
 
 import { WindowFrame } from "./classes/WindowFrame";
 
@@ -41,8 +43,10 @@ gltfLoader.setDRACOLoader(dracoLoader);
 const canvasContainer = document.querySelector("#canvasContainer");
 // - renderer
 const renderer = new WebGLRenderer({ alpha: true, antialias: true });
+renderer.setPixelRatio(1);
 // - enable shadows
 renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = PCFSoftShadowMap;
 canvasContainer.appendChild(renderer.domElement);
 // - scene
 const scene = new Scene();
@@ -115,10 +119,16 @@ gui.addColor(guiVars, "color").onChange((value) => {
     windowFrame.setMaterialColor(value);
 });
 
+// Add Stats.
+const stats = new Stats();
+canvasContainer.appendChild(stats.dom);
+
 // Render loop.
 window.requestAnimationFrame(loop);
 function loop() {
+    stats.begin();
     renderer.render(scene, camera);
+    stats.end();
     window.requestAnimationFrame(loop);
 }
 
