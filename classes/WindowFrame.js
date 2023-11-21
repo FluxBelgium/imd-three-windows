@@ -121,8 +121,8 @@ export class WindowFrame {
             (width - this.frameThickness * 2) / 2,
             height - this.frameThickness * 2
         );
-        this.doorLeft.setPosition(-(width - this.frameThickness * 2) / 2, 0, 0);
-        this.doorRight.setPosition((width - this.frameThickness * 2) / 2, 0, 0);
+        this.doorLeft.setPosition(-width / 2 + this.frameThickness, 0, 0);
+        this.doorRight.setPosition(width / 2 - this.frameThickness, 0, 0);
     }
 
     // Set window doors rotation.
