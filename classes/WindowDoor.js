@@ -162,7 +162,7 @@ export class WindowDoor {
         this.group.rotation.y = -radians * this.group.scale.x;
 
         // Rotate grip.
-        this.handleGrip.rotation.z = Math.max(-radians * 4, -Math.PI / 2);
+        this.handleGrip.rotation.z = Math.max(-radians * 10, -Math.PI / 2);
     }
 
     // Set material color.

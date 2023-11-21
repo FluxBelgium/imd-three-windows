@@ -8,9 +8,9 @@ import {
     PlaneGeometry,
     Scene,
     ShadowMaterial,
+    TextureLoader,
     Vector3,
     WebGLRenderer,
-    PCFSoftShadowMap
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -20,6 +20,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import Stats from "three/addons/libs/stats.module.js";
 
 import { WindowFrame } from "./classes/WindowFrame";
+import { WindowWall } from "./classes/WindowWall";
 
 // Loading textues.
 const cubeTextureLoader = new CubeTextureLoader();
@@ -33,21 +34,22 @@ const texEnvironment = cubeTextureLoader.load([
     "nz.png",
 ]);
 
+// Loaders.
 const gltfLoader = new GLTFLoader();
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath("./draco/");
 gltfLoader.setDRACOLoader(dracoLoader);
+const textureLoader = new TextureLoader();
 
 // Three.js stuff.
 // - canvas container
 const canvasContainer = document.querySelector("#canvasContainer");
 // - renderer
 const renderer = new WebGLRenderer({ alpha: true, antialias: true });
+canvasContainer.appendChild(renderer.domElement);
 renderer.setPixelRatio(1);
 // - enable shadows
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = PCFSoftShadowMap;
-canvasContainer.appendChild(renderer.domElement);
 // - scene
 const scene = new Scene();
 scene.environment = texEnvironment;
@@ -70,6 +72,8 @@ function resize() {
 // Objects.
 const windowFrame = new WindowFrame(1, 1);
 
+const windowWall = new WindowWall(2, 2)
+
 const floor = new Mesh(
     new PlaneGeometry(100, 100),
     new ShadowMaterial({ transparent: true, opacity: 0.1 })
@@ -91,10 +95,10 @@ scene.add(directionalLight);
 directionalLight.shadow.mapSize.set(2048, 2048);
 directionalLight.shadow.camera.near = -1;
 directionalLight.shadow.camera.far = 10;
-directionalLight.shadow.camera.left = -2;
-directionalLight.shadow.camera.right = 2;
-directionalLight.shadow.camera.bottom = -2;
-directionalLight.shadow.camera.top = 2;
+directionalLight.shadow.camera.left = -3.5;
+directionalLight.shadow.camera.right = 3.5;
+directionalLight.shadow.camera.bottom = -3.5;
+directionalLight.shadow.camera.top = 3.5;
 // scene.add(new CameraHelper(directionalLight.shadow.camera))
 
 // Add GUI.
@@ -110,9 +114,11 @@ gui.add(guiVars, "rotation", 0, Math.PI / 2).onChange((value) => {
 });
 gui.add(guiVars, "width", 0.5, 3).onChange((value) => {
     windowFrame.setSize(guiVars.width, guiVars.height);
+    windowWall.setSize(guiVars.width * 2, guiVars.height * 2, guiVars.width, guiVars.height);
 });
 gui.add(guiVars, "height", 0.5, 3).onChange((value) => {
     windowFrame.setSize(guiVars.width, guiVars.height);
+    windowWall.setSize(guiVars.width * 2, guiVars.height * 2, guiVars.width, guiVars.height);
     floor.position.y = -guiVars.height;
 });
 gui.addColor(guiVars, "color").onChange((value) => {
@@ -129,7 +135,8 @@ function loop() {
     stats.begin();
     renderer.render(scene, camera);
     stats.end();
+
     window.requestAnimationFrame(loop);
 }
 
-export { scene, gltfLoader };
+export { scene, gltfLoader, textureLoader };
