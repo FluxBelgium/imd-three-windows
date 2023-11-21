@@ -5,7 +5,6 @@ import {
     MeshBasicMaterial,
     MeshStandardMaterial,
     RepeatWrapping,
-    Vector2,
 } from "three";
 import { scene, textureLoader } from "../main";
 import { CSG } from "three-csg-ts";
