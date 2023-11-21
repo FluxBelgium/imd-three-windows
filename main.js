@@ -23,6 +23,16 @@ import { WindowFrame } from "./classes/WindowFrame";
 import { WindowWall } from "./classes/WindowWall";
 
 // Loading textues.
+
+
+// Loaders.
+const textureLoader = new TextureLoader();
+
+const gltfLoader = new GLTFLoader();
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath("./draco/");
+gltfLoader.setDRACOLoader(dracoLoader);
+
 const cubeTextureLoader = new CubeTextureLoader();
 cubeTextureLoader.setPath("./textures/environment/");
 const texEnvironment = cubeTextureLoader.load([
@@ -33,13 +43,6 @@ const texEnvironment = cubeTextureLoader.load([
     "pz.png",
     "nz.png",
 ]);
-
-// Loaders.
-const gltfLoader = new GLTFLoader();
-const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("./draco/");
-gltfLoader.setDRACOLoader(dracoLoader);
-const textureLoader = new TextureLoader();
 
 // Three.js stuff.
 // - canvas container
