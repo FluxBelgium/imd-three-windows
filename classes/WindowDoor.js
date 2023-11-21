@@ -87,8 +87,8 @@ export class WindowDoor {
 
         // Load handle model.
         gltfLoader.load("./models/handle_compressed.glb", (gltf) => {
-            this.handleBase.geometry = gltf.scene.children[0].geometry;
-            this.handleGrip.geometry = gltf.scene.children[1].geometry;
+            this.handleBase.geometry = gltf.scene.getObjectByName('handle_base').geometry;
+            this.handleGrip.geometry = gltf.scene.getObjectByName('handle_grip').geometry;
 
             this.handleBase.visible = true;
             this.handleGrip.visible = true;
